@@ -6,11 +6,11 @@ package mg.itu.tpbanquebrianrakotoarisoa.jsf;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import mg.itu.tpbanquebrianrakotoarisoa.ejb.GestionnaireCompte;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
+import mg.itu.tpbanquebrianrakotoarisoa.jsf.util.Util;
 
 /**
  *
@@ -58,9 +58,27 @@ public class Transfert implements Serializable{
     }
     
     public String transfert(){
+        boolean erreur = false;
         CompteBancaire source = this.gestionnaireCompte.findCompteById(idSource);
         CompteBancaire destination = this.gestionnaireCompte.findCompteById(idDestination);
+        if (source == null) {
+            Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:source");
+            erreur = true;
+        } else {
+            if (source.getSolde() < somme) { // à compléter pour le cas où le solde du compte source est insuffisant...
+                Util.messageErreur("Solde du compte insuffisant!", "Solde insuffisant!", "form:somme");
+                erreur = true;
+            }
+        }
+        if (destination == null) {
+             Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:destination");
+            erreur = true;
+        }
+        if(erreur){
+            return null;
+        }
         this.gestionnaireCompte.transferer(source, destination, this.somme);
+        Util.addFlashErrorMessage("Le montant de "+this.somme+" a correctement été transféré depuis le compte de "+source.getNom()+" à celui de "+destination.getNom());
         return "listeComptes?faces-redirect=true";
     }
 }
