@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import mg.itu.tpbanquebrianrakotoarisoa.ejb.GestionnaireCompte;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
+import mg.itu.tpbanquebrianrakotoarisoa.jsf.util.Util;
 
 /**
  *
@@ -46,4 +47,9 @@ public class ListeComptes implements Serializable {
         return solde >= Integer.valueOf(filtre) ? true : false;
     }
     
+    public String supprimerCompte(CompteBancaire compteBancaire) {
+        gestionnaireCompte.supprimerCompte(compteBancaire);
+        Util.addFlashInfoMessage("Compte de " + compteBancaire.getNom() + " supprimé");
+        return "listeComptes?faces-redirect=true";
+    }
 }
