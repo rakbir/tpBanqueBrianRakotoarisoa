@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template_defaut.xhtml">
+
+            <ui:define name="top">
+                Transfert d'argent d'un compte à l'autre
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <h:panelGrid columns="3">
+                        Id compte source :
+                        <h:inputText id="source" size="3" value="#{transfert.idSource}"
+                                     required="true"
+                                     converterMessage="L'id est un nombre entier"/>
+                        <h:message for="source"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        Id compte destination : 
+                        <h:inputText id="destination" size="3" value="#{transfert.idDestination}"
+                                     required="true"
+                                     converterMessage="L'id est un nombre entier"/>
+                        <h:message for="destination"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        Somme à transférer :
+                        <h:inputText id="somme" size="3" value="#{transfert.somme}"
+                                     required="true"
+                                     converterMessage="La somme est un nombre entier"/>
+                        <h:message for="somme"/>
+                    </h:panelGrid>
+                    <h:commandButton value="Valider" action="#{transfert.transfert()}"/>
+                </h:form>
+                <h:messages/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
