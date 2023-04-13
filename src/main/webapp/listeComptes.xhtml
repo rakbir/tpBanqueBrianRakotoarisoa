@@ -48,7 +48,8 @@
                             </f:facet>
                             <h:commandLink action="#{listeComptes.supprimerCompte(item)}" title="Supprimer le compte de #{item.nom}" >
                                 <h:graphicImage name="images/del.png"/>
-                            </h:commandLink>                            
+                            </h:commandLink> 
+                            <h:link outcome="modifierNomTitulaireCompte?id=#{item.id}" value="Modifier nom"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>

@@ -54,5 +54,4 @@ public class AjoutCompte {
         Util.addFlashInfoMessage("Le compte de "+nouveau.getNom()+" est correctement créé avec un solde de "+nouveau.getSolde());
         return "ajoutCompte?faces-redirect=true";
     }
-    
 }
