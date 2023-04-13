@@ -58,4 +58,8 @@
   text-decoration : underline;
 }
 
-
+#content {
+    position: relative;
+    background-color: #ffffff;
+    padding: 5px;
+}

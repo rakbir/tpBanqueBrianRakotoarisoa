@@ -9,6 +9,7 @@ import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 import mg.itu.tpbanquebrianrakotoarisoa.ejb.GestionnaireCompte;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
 
@@ -19,6 +20,7 @@ import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
 @Named(value = "listeComptes")
 @ViewScoped
 public class ListeComptes implements Serializable {
+    private List<CompteBancaire> allComptes;
     @EJB
     private GestionnaireCompte gestionnaireCompte;
     /**
@@ -28,7 +30,20 @@ public class ListeComptes implements Serializable {
     }
     
     public List<CompteBancaire> getAllComptes(){
-        return gestionnaireCompte.getAllComptes();
+        if(this.allComptes == null){
+            this.allComptes = gestionnaireCompte.getAllComptes();
+        }
+        return this.allComptes;
+    }
+    
+    /**
+     * Si le solde est supérieur ou égal au filtre, donc true
+     * solde = la valeur de la colonne à laquelle appliquer le filtre
+     * filtre = la valeur du filtre à appliquer 
+     * locale = si application de formattages géographiques
+     */
+    public boolean filterBySolde(int solde, String filtre, Locale locale){
+        return solde >= Integer.valueOf(filtre) ? true : false;
     }
     
 }
