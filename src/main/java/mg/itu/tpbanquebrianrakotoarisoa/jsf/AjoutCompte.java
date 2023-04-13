@@ -51,7 +51,7 @@ public class AjoutCompte {
     public String ajouterCompte(){
         CompteBancaire nouveau = new CompteBancaire(this.nom, this.solde);
         gestionnaireCompte.creerCompte(nouveau);
-        Util.addFlashErrorMessage("Le compte de "+nouveau.getNom()+" est correctement créé avec un solde de "+nouveau.getSolde());
+        Util.addFlashInfoMessage("Le compte de "+nouveau.getNom()+" est correctement créé avec un solde de "+nouveau.getSolde());
         return "ajoutCompte?faces-redirect=true";
     }
     

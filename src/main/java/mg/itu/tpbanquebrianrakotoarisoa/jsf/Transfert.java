@@ -78,7 +78,7 @@ public class Transfert implements Serializable{
             return null;
         }
         this.gestionnaireCompte.transferer(source, destination, this.somme);
-        Util.addFlashErrorMessage("Le montant de "+this.somme+" a correctement été transféré depuis le compte de "+source.getNom()+" à celui de "+destination.getNom());
+        Util.addFlashInfoMessage("Le montant de "+this.somme+" a correctement été transféré depuis le compte de "+source.getNom()+" à celui de "+destination.getNom());
         return "listeComptes?faces-redirect=true";
     }
 }
