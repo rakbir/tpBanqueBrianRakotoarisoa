@@ -44,7 +44,7 @@ public class ListeComptes implements Serializable {
      * locale = si application de formattages géographiques
      */
     public boolean filterBySolde(int solde, String filtre, Locale locale){
-        return solde >= Integer.valueOf(filtre) ? true : false;
+        return solde >= Integer.valueOf(filtre);
     }
     
     public String supprimerCompte(CompteBancaire compteBancaire) {

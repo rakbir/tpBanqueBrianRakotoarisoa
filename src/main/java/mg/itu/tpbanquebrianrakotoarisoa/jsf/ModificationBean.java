@@ -53,7 +53,7 @@ public class ModificationBean implements Serializable{
     
     public String enregistrerModification(){
         gestionnaireCompte.update(compte);
-        Util.addFlashInfoMessage("Modifications enregistrées");
-        return "modifierNomTitulaireCompte?id="+ id +"&amp;faces-redirect=true";
+        Util.addFlashInfoMessage("Modifications enregistrées, compte: "+id+", nom: "+compte.getNom());
+        return "listeComptes?faces-redirect=true";
     }
 }
