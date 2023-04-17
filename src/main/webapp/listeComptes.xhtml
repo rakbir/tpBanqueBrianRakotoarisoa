@@ -51,6 +51,16 @@
                             </h:commandLink> 
                             <h:link outcome="modifierNomTitulaireCompte?id=#{item.id}" value="Modifier nom"/>
                         </p:column>
+                        <p:column style="text-align:right;" width="60" >
+                            <f:facet name="header">
+                                <h:outputText escape="false" value="Historique&lt;br/>opérations"/>
+                                <!-- esace = false pour interpreter balises html dans outputtext
+                                <h:outputText escape="false" value="Historique<br/>opérations"/> -->
+                            </f:facet>
+                            <h:link outcome="operations" value="Détails">
+                                <f:param name="id" value="#{item.id}"/>
+                            </h:link>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
                 
