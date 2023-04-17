@@ -27,9 +27,8 @@ public class OperationBancaire implements Serializable {
     
     private int montant;
 
-
     private LocalDateTime dateOperation;
-
+    
 
     public String getDescription() {
         return description;
