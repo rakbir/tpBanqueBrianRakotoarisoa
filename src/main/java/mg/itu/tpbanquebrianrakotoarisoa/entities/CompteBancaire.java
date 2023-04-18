@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,11 @@ import java.util.List;
     @NamedQuery(name = "CompteBancaire.countAll", query = "SELECT count(c) FROM CompteBancaire c")
 })
 public class CompteBancaire implements Serializable {
-
+    @Version
+    private int version;
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

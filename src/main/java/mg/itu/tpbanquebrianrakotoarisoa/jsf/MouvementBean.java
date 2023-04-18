@@ -5,15 +5,15 @@
 package mg.itu.tpbanquebrianrakotoarisoa.jsf;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIInput;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.validator.ValidatorException;
-import jakarta.faces.view.ViewScoped;
-import jakarta.inject.Named;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
+import jakarta.persistence.OptimisticLockException;
 import java.io.Serializable;
 import mg.itu.tpbanquebrianrakotoarisoa.ejb.GestionnaireCompte;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
@@ -91,13 +91,28 @@ public class MouvementBean implements Serializable {
   }
   
   public String enregistrerMouvement() {
-    if (typeMouvement.equals("ajout")) {
-      gestionnaireCompte.deposer(compte, montant);
-    } else {
-      gestionnaireCompte.retirer(compte, montant);
-    }
-    Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
-    return "listeComptes?faces-redirect=true";
+    try{
+        if (typeMouvement.equals("ajout")) {
+          gestionnaireCompte.deposer(compte, montant);
+        } else {
+          gestionnaireCompte.retirer(compte, montant);
+        }
+        Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
+        return "listeComptes?faces-redirect=true";
+    } catch (EJBException ex) {
+        Throwable cause = ex.getCause();
+        if (cause != null) {
+            if (cause instanceof OptimisticLockException) {
+                Util.messageErreur("Le compte de " + compte.getNom()
+                        + " a été modifié ou supprimé par un autre utilisateur !");
+            } else { // Afficher le message de ex si la cause n'est pas une OptimisticLockException
+                Util.messageErreur(cause.getMessage());
+            }
+        } else { // Pas de cause attachée à l'EJBException
+            Util.messageErreur(ex.getMessage());
+        }
+        return null; // pour rester sur la page s'il y a une exception
+      }
   }
     
 }
