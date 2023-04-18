@@ -17,6 +17,7 @@ import jakarta.persistence.OptimisticLockException;
 import java.io.Serializable;
 import mg.itu.tpbanquebrianrakotoarisoa.ejb.GestionnaireCompte;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
+import mg.itu.tpbanquebrianrakotoarisoa.exception.ConcurrentAccessException;
 import mg.itu.tpbanquebrianrakotoarisoa.jsf.util.Util;
 
 /**
@@ -93,9 +94,17 @@ public class MouvementBean implements Serializable {
   public String enregistrerMouvement() {
     try{
         if (typeMouvement.equals("ajout")) {
-          gestionnaireCompte.deposer(compte, montant);
+            try{
+                gestionnaireCompte.deposer(compte, montant);
+            }catch(ConcurrentAccessException ex ){
+                Util.addFlashErrorMessage(ex.getMessage());
+            }
         } else {
-          gestionnaireCompte.retirer(compte, montant);
+            try{
+               gestionnaireCompte.retirer(compte, montant);
+            }catch(ConcurrentAccessException ex ){
+                Util.addFlashErrorMessage(ex.getMessage());
+            }
         }
         Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
         return "listeComptes?faces-redirect=true";

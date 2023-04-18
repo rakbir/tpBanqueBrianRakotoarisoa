@@ -7,11 +7,13 @@ package mg.itu.tpbanquebrianrakotoarisoa.ejb;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
+import mg.itu.tpbanquebrianrakotoarisoa.exception.ConcurrentAccessException;
 
 /**
  *
@@ -66,22 +68,44 @@ public class GestionnaireCompte {
     
     /**
      * Dépôt d'argent sur un compte bancaire.
-     * @param compteBancaire
+     * @param compte
      * @param montant 
      */
-    public void deposer(CompteBancaire compteBancaire, int montant) {
-      compteBancaire.deposer(montant);
-      update(compteBancaire);
+    public void deposer(CompteBancaire compte, int montant) {
+        int solde = compte.getSolde();
+        boolean concurrence = false;
+        compte = em.find(CompteBancaire.class, compte.getId(),
+                LockModeType.PESSIMISTIC_WRITE);
+        if (solde != compte.getSolde()) {
+            // le solde a été modifié ; il faut avertir l'utilisateur
+            concurrence = true;
+        }
+        compte.deposer(montant);
+        update(compte);
+        if (concurrence) {
+            // le solde a été modifié ; il faut avertir l'utilisateur
+            throw new ConcurrentAccessException("Dépôt effectué mais le solde a été modifié concurremment");
+        }
     }
     
     /**
      * Retrait d'argent sur un compte bancaire.
-     * @param compteBancaire
+     * @param compte
      * @param montant 
      */
-    public void retirer(CompteBancaire compteBancaire, int montant) {
-      compteBancaire.retirer(montant);
-      update(compteBancaire);
+    public void retirer(CompteBancaire compte, int montant) {
+        int solde= compte.getSolde();
+        boolean concurrence = false;
+        compte = em.find(CompteBancaire.class, compte.getId(),
+                LockModeType.PESSIMISTIC_WRITE);
+        if (solde != compte.getSolde()) {
+            concurrence = true;
+        }
+        compte.retirer(montant);
+        update(compte);
+        if (concurrence) {
+            throw new ConcurrentAccessException("Retrait effectué mais le solde a été modifié concurremment");
+        }
     }
     
     public void supprimerCompte(CompteBancaire compte) {
