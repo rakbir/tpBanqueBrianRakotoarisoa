@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mg.itu.tpbanquebrianrakotoarisoa.ejb;
+package mg.itu.tpbanquebrianrakotoarisoa.jsf;
 
 import jakarta.ejb.EJB;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.FacesConverter;
+import mg.itu.tpbanquebrianrakotoarisoa.ejb.GestionnaireCompte;
 import mg.itu.tpbanquebrianrakotoarisoa.entities.CompteBancaire;
 
 /**
